@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Code = require('../models/code');
 
 const userService = Object.create(null);
 
@@ -19,8 +20,8 @@ userService.addUser = async userData => {
 }
 
 /**
- * @Name: 
- * @Description: 
+ * @Name: findOneUser
+ * @Description: 查询一个用户
  * @Param:  
  * @Return: 
  * @Author: Zander Xue
@@ -28,6 +29,27 @@ userService.addUser = async userData => {
  */
 userService.findOneUser = async (matchObj) => {
   return await User.findOne(matchObj);
+}
+
+userService.findCode = async (matchObj) => {
+  return await Code.findOne(matchObj);
+}
+
+/**
+ * @Name: saveCodeData
+ * @Description: 保存验证码数据
+ * @Param:  
+ * @Return: 
+ * @Author: Zander Xue
+ * @Date: 2020-06-12 10:18:07
+ */
+userService.saveCodeData = async (codeData) => {
+  const isExist = await userService.findCode({ email: codeData.email });
+  if (isExist) {
+    return await Code.findByIdAndUpdate(isExist._id, codeData);
+  } else {
+    return await new Code(codeData).save();
+  }
 }
 
 module.exports = userService;
