@@ -1,3 +1,5 @@
+const data = require('./hidden');
+
 const config = {
   server: {
     port: 2000
@@ -16,7 +18,7 @@ const config = {
     secure: true,
     auth: {
       user: '1196637816@qq.com',
-      pass: 'jihgyalyehemihfh'
+      pass: data.smtpPwd
     }
   }
 }
