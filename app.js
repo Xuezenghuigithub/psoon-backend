@@ -8,6 +8,7 @@ require('./utils/db');
 
 const userRouter = require('./routes/user');
 const imgRouter = require('./routes/img');
+const otherRouter = require('./routes/other');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', userRouter);
 app.use('/img', imgRouter);
+app.use('/other', otherRouter);
 
 //----------------------------cors 设置---------------------------------------
 app.use((req, res, next) => {
