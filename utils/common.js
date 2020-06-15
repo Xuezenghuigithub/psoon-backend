@@ -26,13 +26,28 @@ class Common {
     return nowTime - startTime >= interval ? false : true;
   }
 
-
   static resSuccess (result, status = 200, msg = 'success'){
     return { status, msg, result };
   }
 
   static resError (status = 501, msg = 'params error', result = null){
     return { status, msg, result };
+  }
+
+  static resFromService (result, msg = 'success'){
+    if (_.isString(result)) {
+      return {
+        status: 504,
+        msg: result,
+        result: null
+      }
+    }
+
+    return {
+      status: 200,
+      msg,
+      result
+    }
   }
 }
 

@@ -110,3 +110,5 @@ dist
 
 # hidden
 conf/hidden.js
+
+public/
