@@ -9,7 +9,11 @@ const storage = multer.diskStorage({ // multer磁盘存储引擎
         cb(null, 'public/images/') // 指定存储位置
     },
     filename: function (req, file, cb) { // 文件重命名
-      cb(null, file.fieldname + Date.now() + '.' + file.mimetype.split('/')[1])
+      let type = file.mimetype.split('/')[1];
+      if (type === 'svg+xml') {
+        type = 'svg';
+      }
+      cb(null, file.fieldname + Date.now() + '.' + type)
     }
 })
 const upload = multer({
@@ -49,7 +53,7 @@ router.get('/tech', async (req, res) => {
 
 
 router.post('/tech', upload.single('file'), async (req, res, next) => {
-  const { name } = req.body;
+  const name = req.body.name;
   const maxSize = 5 * 1024 * 1024;
 
   if (!_.isString(name)) {

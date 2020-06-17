@@ -14,7 +14,6 @@ router.get('/like', async (req, res) => {
 
 router.post('/like', async (req, res) => {
   const result = await otherService.updateCount();
-  console.log(result);
   res.json(Common.resFromService(result));;
 })
 

@@ -20,7 +20,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+const options = {
+  setHeaders: function (res, path, stat) { // 静态资源可跨域
+    res.set('Access-Control-Allow-Origin', '*')
+  }
+}
+app.use(express.static(path.join(__dirname, 'public'), options));
 
 app.use('/', userRouter);
 app.use('/img', imgRouter);
