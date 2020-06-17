@@ -7,7 +7,7 @@ const logger = require('morgan');
 require('./utils/db');
 
 const userRouter = require('./routes/user');
-const imgRouter = require('./routes/img');
+const techRouter = require('./routes/tech');
 const otherRouter = require('./routes/other');
 
 const app = express();
@@ -28,7 +28,7 @@ const options = {
 app.use(express.static(path.join(__dirname, 'public'), options));
 
 app.use('/', userRouter);
-app.use('/img', imgRouter);
+app.use('/tech', techRouter);
 app.use('/other', otherRouter);
 
 //----------------------------cors 设置---------------------------------------

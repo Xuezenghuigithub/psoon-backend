@@ -3,6 +3,7 @@ const router = express.Router();
 const Common = require('../utils/common');
 const Regex = require('../utils/regex');
 const _ = require('lodash');
+const fs = require('fs');
 const multer = require('multer'); // 引入multer中间件
 const storage = multer.diskStorage({ // multer磁盘存储引擎
     destination: function (req, file, cb) {
@@ -20,7 +21,7 @@ const upload = multer({
     storage
 })
 
-const imgService = require('../service/img');
+const techService = require('../service/tech');
 
 /**
  * @Name: /tech
@@ -46,7 +47,7 @@ router.get('/tech', async (req, res) => {
     queryObj.name = name;
   }
   
-  const result = await imgService.getTech(queryObj);
+  const result = await techService.getTech(queryObj);
   res.json(Common.resFromService(result));
 })
 
@@ -72,7 +73,26 @@ router.post('/tech', upload.single('file'), async (req, res, next) => {
     upload_time: Date.now(),
     path
   }
-  const result = await imgService.addTech(techData);
+  const result = await techService.addTech(techData);
+  res.json(Common.resFromService(result));
+})
+
+router.delete('/tech', async (req, res) => {
+  const { _id } = req.body;
+  if (!Regex.isId(_id)) {
+    return res.json(Common.resError());
+  }
+  // 删除静态资源
+  const techList = await techService.getTech({ _id });
+  const path = `public/${techList[0].path}`;
+  
+  try {
+    fs.unlinkSync(path);
+  } catch (error) {
+    console.log(error);
+    return res.json(Common.resError( error.message || 'delete file error'));
+  }
+  const result = await techService.deleteTech(_id);
   res.json(Common.resFromService(result));
 })
 
